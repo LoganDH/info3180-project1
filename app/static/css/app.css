@@ -1,3 +1,89 @@
+#header-home-img{
+    height: 2rem;
+    width: 2rem;
+} 
+
 body {
-    padding-top: 50px;
+    padding-top: 3.5rem;
+    background-color: rgb(230, 218, 218);
+}
+
+h1 {
+    font-weight: bold;
+}
+
+.property-all {
+    background-color: whitesmoke;
+}
+
+#property-form {
+    font-weight: bold;
+    width: 50rem;
+    padding: 1rem;
+}
+
+#property-form-flex-div {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: space-between;
+}
+
+.property-form-div {
+    width: 23rem;
+}
+
+#properties-grid-container {
+    display: grid;
+    grid-gap: 1.25% 1.25%;
+    grid-template-columns: 32.5% 32.5% 32.5%;
+  }
+
+#properties-img {
+    height: 15rem;
+    width: 100%;
+}
+
+#properties-div {
+    padding: 0.5rem 0.7rem;
+}
+
+#properties-location-img {
+    width: 1.5em;
+}
+
+#properties-price-div {
+    display: flex;
+    width: fit-content;
+    color: white;
+    background-color: green;
+    border-radius: 50px;
+}
+
+#properties-price {
+    display: flex;
+    justify-content: center;
+    margin: auto;
+    padding: 0.1rem 0.5rem;
+}
+
+#properties-view-property-button {
+    width: 100%;
+}
+
+#properties-view-property-button-content {
+    color: white;
+}
+
+#propertyById {
+    border: 2px solid black;
+    width: fit-content;
+}
+
+#propertyById-img {
+    border: 2px solid green;
+}
+
+#propertyById-info {
+    border: 2px solid red;
 }

@@ -4,9 +4,12 @@ Jinja2 Documentation:    http://jinja.pocoo.org/2/documentation/
 Werkzeug Documentation:  http://werkzeug.pocoo.org/documentation/
 This file creates your application.
 """
-
-from app import app
-from flask import render_template, request, redirect, url_for
+import os
+from app import app, db
+from flask import render_template, request, redirect, url_for, flash, send_from_directory
+from werkzeug.utils import secure_filename
+from .forms import MyForm
+from .models import Properties
 
 
 ###
@@ -22,7 +25,47 @@ def home():
 @app.route('/about/')
 def about():
     """Render the website's about page."""
-    return render_template('about.html', name="Mary Jane")
+    return render_template('about.html', name="Logan Halsall")
+
+@app.route('/property', methods=['GET', 'POST'])
+def property():
+    form = MyForm()
+    if request.method == "POST" and form.validate_on_submit():
+        title = form.title.data
+        number_of_bedrooms = form.number_of_bedrooms.data
+        number_of_bathrooms = form.number_of_bathrooms.data
+        location = form.location.data
+        price = form.price.data
+        type = form.type.data
+        description = form.description.data
+        photo = form.photo.data
+        filename = secure_filename(photo.filename)
+        photo.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+
+        property = Properties(title, number_of_bedrooms, number_of_bathrooms, location, price, type, description, filename)
+        db.session.add(property)
+        db.session.commit()
+
+        flash('You have successfully filled out the form', 'success')
+        return redirect(url_for('properties'))
+
+    flash_errors(form)
+    return render_template('property.html', form=form)
+
+@app.route('/uploads/<filename>')
+def get_image(filename):
+    root_dir = os.getcwd()
+    return send_from_directory(os.path.join(root_dir, app.config['UPLOAD_FOLDER']), filename)
+
+@app.route('/properties')
+def properties():
+    properties = Properties.query.all()
+    return render_template('properties.html', properties=properties)
+
+@app.route('/property/<propertyid>')
+def propertyById(propertyid):
+    property = Properties.query.filter_by(id=propertyid).first()
+    return render_template('propertyById.html', property=property)
 
 
 ###
